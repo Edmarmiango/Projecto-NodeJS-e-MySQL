@@ -13,10 +13,17 @@ const app = express();
 // Adicionar bootstrap
 app.use('/bootstrap', express.static('./node_modules/bootstrap/dist'));
 
+// Adicionar css
+app.use('/css', express.static('./css'));
+
 // configuração do express-handlebars 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
+
+// Manipulação de dados via rota
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 
 //configuração de conexão
 const conexao = mysql.createConnection({
@@ -38,6 +45,14 @@ app.get('/', function(req, res){
     res.render('formulario');
 });
 
+
+// Rota de cadastro
+app.post('/cadastrar', function(req, res){
+    console.log(req.body); // body para enviar apenas os dados que o meu cliente está fornecendo ou passando
+    // Nesse caso: o nome, valor e imagem do produto
+    res.end();
+
+});
 
 // servidor
 app.listen(8080);
